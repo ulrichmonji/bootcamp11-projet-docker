@@ -23,6 +23,28 @@ services:
     container_name: api-student
     networks:
       - ulrich-networks
+  
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    container_name: registry
+    networks:
+      - ulrich-networks
+
+  registry-ihm:
+    depends_on:
+      - registry
+    image: joxit/docker-registry-ui
+    ports:
+      - "8000:80"
+    container_name: registry-ihm
+    environment:
+      - REGISTRY_TITLE="ULRICH REGISTRY"
+      - REGISTRY_URL="http://127.0.0.1:5000"
+    networks:
+      - ulrich-networks
+
 
 networks:
   ulrich-networks:
